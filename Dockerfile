@@ -1,9 +1,14 @@
-FROM python:3.7-stretch
+FROM openjdk:8-jdk-slim-buster
 
-# Install openjdk
 RUN apt-get update && \
-    apt-get install -y openjdk-8-jdk graphviz && \
-    apt-get clean;
+    apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        python3.7 \
+        python3-pip \
+        python3.7-dev \
+        python3-setuptools \
+        python3-wheel
 
 # Setup a user
 RUN useradd -ms /bin/bash ltr
@@ -16,7 +21,7 @@ ADD . /home/ltr/hello-ltr
 RUN chown -R ltr.ltr hello-ltr
 WORKDIR /home/ltr/hello-ltr
 
-RUN /usr/local/bin/python -m pip install --upgrade pip
+RUN /usr/bin/python3 -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 USER ltr
 
